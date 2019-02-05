@@ -20,7 +20,7 @@ namespace ubtnews.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ArticleUser>()
-                .HasKey(t => new {t.ArticleId, t.UserId});
+                .HasKey(t => new { t.ArticleId, t.UserId });
 
             modelBuilder.Entity<ArticleUser>()
                 .HasOne(pt => pt.Article)
@@ -31,6 +31,35 @@ namespace ubtnews.Data
                 .HasOne(pt => pt.User)
                 .WithMany()
                 .HasForeignKey(pt => pt.UserId);
+
+            modelBuilder.Entity<Comment>()
+                .HasKey(t => new { t.ArticleId, t.UserId });
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(pt => pt.Article)
+                .WithMany(a => a.Comments)
+                .HasForeignKey(pt => pt.ArticleId);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(pt => pt.User)
+                .WithMany()
+                .HasForeignKey(pt => pt.UserId);
+
+            modelBuilder.Entity<Article>()
+                .HasMany(c => c.ArticleCategories)
+                .WithOne(e => e.Article);
+
+            modelBuilder.Entity<Article>()
+                .HasMany(c => c.Comments)
+                .WithOne(e => e.Article);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.ArticleCategories)
+                .WithOne(e => e.Category);
+
+            
+
+
         }
 
 

@@ -10,8 +10,8 @@ using ubtnews.Data;
 namespace ubtnews.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190205143559_CreatedTablesFromModels")]
-    partial class CreatedTablesFromModels
+    [Migration("20190205192943_TablesWithRelations")]
+    partial class TablesWithRelations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -194,8 +194,6 @@ namespace ubtnews.Data.Migrations
 
                     b.Property<string>("Body");
 
-                    b.Property<int>("CategoryId");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Img");
@@ -205,8 +203,6 @@ namespace ubtnews.Data.Migrations
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Articles");
                 });
@@ -222,6 +218,10 @@ namespace ubtnews.Data.Migrations
                     b.Property<int>("CategoryId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ArticleCategories");
                 });
@@ -254,19 +254,19 @@ namespace ubtnews.Data.Migrations
 
             modelBuilder.Entity("ubtnews.Models.Comment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("ArticleId");
+
+                    b.Property<string>("UserId");
 
                     b.Property<DateTime>("CreatedAt");
 
+                    b.Property<int>("Id");
+
                     b.Property<string>("TheComment");
 
-                    b.Property<int>("UserId");
+                    b.HasKey("ArticleId", "UserId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -335,10 +335,15 @@ namespace ubtnews.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ubtnews.Models.Article", b =>
+            modelBuilder.Entity("ubtnews.Models.ArticleCategory", b =>
                 {
+                    b.HasOne("ubtnews.Models.Article", "Article")
+                        .WithMany("ArticleCategories")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ubtnews.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("ArticleCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -347,6 +352,19 @@ namespace ubtnews.Data.Migrations
                 {
                     b.HasOne("ubtnews.Models.Article", "Article")
                         .WithMany("ArticleUsers")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ubtnews.Models.Comment", b =>
+                {
+                    b.HasOne("ubtnews.Models.Article", "Article")
+                        .WithMany("Comments")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade);
 

@@ -14,9 +14,12 @@ namespace ubtnews.Models
         public string Img { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        
+        
 
         public List<ArticleUser> ArticleUsers { get; set; }
+    
+        public List<ArticleCategory> ArticleCategories { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

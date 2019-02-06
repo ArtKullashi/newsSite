@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ubtnews.Models;
@@ -19,31 +20,30 @@ namespace ubtnews.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ArticleUser>()
+            modelBuilder.Entity<Permission>()
                 .HasKey(t => new { t.ArticleId, t.UserId });
 
-            modelBuilder.Entity<ArticleUser>()
+            modelBuilder.Entity<Permission>()
                 .HasOne(pt => pt.Article)
-                .WithMany(a => a.ArticleUsers)
+                .WithMany(a => a.Permissions)
                 .HasForeignKey(pt => pt.ArticleId);
 
-            modelBuilder.Entity<ArticleUser>()
+            modelBuilder.Entity<Permission>()
                 .HasOne(pt => pt.User)
                 .WithMany()
                 .HasForeignKey(pt => pt.UserId);
 
             modelBuilder.Entity<Comment>()
-                .HasKey(t => new { t.ArticleId, t.UserId });
-
-            modelBuilder.Entity<Comment>()
-                .HasOne(pt => pt.Article)
-                .WithMany(a => a.Comments)
-                .HasForeignKey(pt => pt.ArticleId);
-
-            modelBuilder.Entity<Comment>()
                 .HasOne(pt => pt.User)
                 .WithMany()
                 .HasForeignKey(pt => pt.UserId);
+
+            modelBuilder.Entity<Article>()
+                .HasOne(pt => pt.User)
+                .WithMany()
+                .HasForeignKey(pt => pt.UserId);
+
+
 
             modelBuilder.Entity<Article>()
                 .HasMany(c => c.ArticleCategories)
@@ -64,7 +64,7 @@ namespace ubtnews.Data
 
 
         public DbSet<Article> Articles { get; set; }
-        public DbSet<ArticleUser> ArticleUsers { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ArticleCategory> ArticleCategories { get; set; }
         public DbSet<Comment> Comments { get; set; }

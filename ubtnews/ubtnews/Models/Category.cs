@@ -12,6 +12,6 @@ namespace ubtnews.Models
         public string Name { get; set; }
         
 
-        public List<ArticleCategory> ArticleCategories { get; set; }
+        public ICollection<ArticleCategory> ArticleCategories { get; set; }
     }
 }

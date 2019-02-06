@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ubtnews.Models
 {
-    public class ArticleUser
+    public class Permission
     {
         public int ArticleId { get; set; }
         public Article Article { get; set; }

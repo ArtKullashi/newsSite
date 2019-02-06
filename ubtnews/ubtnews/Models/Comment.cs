@@ -9,6 +9,8 @@ namespace ubtnews.Models
     public class Comment
     {
         public int Id { get; set; }
+
+        //TheComment se nuk bon me lon emrin e njejte te properties me emer te klases
         public string TheComment { get; set; }
         public DateTime CreatedAt { get; set; }
 

@@ -198,9 +198,11 @@ namespace ubtnews.Data.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Articles");
                 });
@@ -224,19 +226,6 @@ namespace ubtnews.Data.Migrations
                     b.ToTable("ArticleCategories");
                 });
 
-            modelBuilder.Entity("ubtnews.Models.ArticleUser", b =>
-                {
-                    b.Property<int>("ArticleId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("ArticleId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ArticleUsers");
-                });
-
             modelBuilder.Entity("ubtnews.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -252,17 +241,21 @@ namespace ubtnews.Data.Migrations
 
             modelBuilder.Entity("ubtnews.Models.Comment", b =>
                 {
-                    b.Property<int>("ArticleId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("ArticleId");
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<int>("Id");
-
                     b.Property<string>("TheComment");
 
-                    b.HasKey("ArticleId", "UserId");
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -286,6 +279,19 @@ namespace ubtnews.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("ubtnews.Models.Permission", b =>
+                {
+                    b.Property<int>("ArticleId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("ArticleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -333,6 +339,13 @@ namespace ubtnews.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("ubtnews.Models.Article", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("ubtnews.Models.ArticleCategory", b =>
                 {
                     b.HasOne("ubtnews.Models.Article", "Article")
@@ -346,23 +359,22 @@ namespace ubtnews.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ubtnews.Models.ArticleUser", b =>
+            modelBuilder.Entity("ubtnews.Models.Comment", b =>
                 {
                     b.HasOne("ubtnews.Models.Article", "Article")
-                        .WithMany("ArticleUsers")
+                        .WithMany("Comments")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("ubtnews.Models.Comment", b =>
+            modelBuilder.Entity("ubtnews.Models.Permission", b =>
                 {
                     b.HasOne("ubtnews.Models.Article", "Article")
-                        .WithMany("Comments")
+                        .WithMany("Permissions")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade);
 

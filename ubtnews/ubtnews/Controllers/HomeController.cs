@@ -4,15 +4,32 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ubtnews.Data;
 using ubtnews.Models;
+using ubtnews.Models.Home;
 
 namespace ubtnews.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index(int? page)
+        {
+            var articles = _context.Articles.Include(a => a.ArticleCategories).AsNoTracking();
+            int pageSize= 3;
+
+            var vm = new IndexViewModel
+            {
+                Articles = await PaginatedList<Article>.CreateAsync(articles, page ?? 1, pageSize)
+            };
+            return View(vm);
         }
 
         public IActionResult About()
@@ -30,6 +47,10 @@ namespace ubtnews.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        public IActionResult testi()
         {
             return View();
         }

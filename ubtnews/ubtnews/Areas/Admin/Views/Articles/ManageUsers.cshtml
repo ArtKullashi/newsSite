@@ -1,0 +1,48 @@
+﻿@model ubtnews.Areas.Admin.Models.Articles.ManageUsersViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "ManageUsers";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ManageUsers</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AssignedUsers)
+        {
+            <tr>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    <a asp-action="RemoveUserFromArticle" asp-route-id="@Model.Id" asp-route-userId="@item.Id">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddUserToArticle" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="form-group">
+                <label class="control-label"></label>
+                <select name="userId" class="form-control" asp-items="Model.AvailableUsersSelectList"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>

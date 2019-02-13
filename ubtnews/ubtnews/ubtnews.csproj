@@ -11,6 +11,8 @@
     <Compile Remove="Data\Migrations\20190205192829_TablesWithRelations.Designer.cs" />
     <Compile Remove="Data\Migrations\20190206163815_TablesWithCorrectRelations.cs" />
     <Compile Remove="Data\Migrations\20190206163815_TablesWithCorrectRelations.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213151152_AddPaginationModel.cs" />
+    <Compile Remove="Data\Migrations\20190213151152_AddPaginationModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

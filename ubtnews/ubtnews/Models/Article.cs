@@ -19,6 +19,7 @@ namespace ubtnews.Models
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
 
+        
         public ICollection<ArticleCategory> ArticleCategories { get; set; }
         public ICollection<Comment> Comments { get; set; }
     }

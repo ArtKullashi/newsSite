@@ -20,9 +20,9 @@ namespace ubtnews.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, string term)
         {
-            var articles = _context.Articles.Include(a => a.ArticleCategories).AsNoTracking();
+            var articles = _context.Articles.Where(t => t.Title.Contains(term ?? "")).Include(a => a.ArticleCategories).AsNoTracking();
             int pageSize= 3;
 
             var vm = new IndexViewModel

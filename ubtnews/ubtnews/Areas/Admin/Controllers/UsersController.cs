@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ubtnews.Areas.Admin.Models.Users;
+using ubtnews.Models;
 
 namespace TopNews.Areas.Admin.Controllers
 {
@@ -21,11 +22,20 @@ namespace TopNews.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string term)
         {
             var users = await _userManager.GetUsersInRoleAsync("NormalUser");
+            var usersToReturn = new List<IdentityUser>();
 
-            return View(users);
+            for(int i = 0; i < users.Count; i++)
+            {
+                if(users[i].Email.ToLower().Contains((term ?? "").ToLower()))
+                {
+                    usersToReturn.Add(users[i]);
+                }
+            }
+        
+            return View(usersToReturn);
         }
 
         [HttpGet]

@@ -39,21 +39,20 @@ namespace ubtnews.Areas.Admin.Controllers
         }
 
         // GET: Admin/Articles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string term)
         {
-            if (User.IsInRole("Administrator"))
-            {
-                var articles = await _context.Articles.ToListAsync();
-                return View(articles);
-            }
-            else
-            {
-                var articles = await _context.Articles
+            var articles = User.IsInRole("Administrator") ? await _context.Articles.ToListAsync() : await _context.Articles
                                 .Where(a => a.Permissions.Exists(au => au.UserId == CurrentUserId))
                                 .ToListAsync();
-
-                return View(articles);
+            var articlesToReturn = new List<Article>();
+            for(int i = 0; i < articles.Count; i++)
+            {
+                if (articles[i].Title.Contains(term ?? "") || articles[i].Body.Contains(term ?? ""))
+                {
+                    articlesToReturn.Add(articles[i]);
+                }
             }
+            return View(articlesToReturn);
         }
 
         // GET: Admin/Articles/Details/5

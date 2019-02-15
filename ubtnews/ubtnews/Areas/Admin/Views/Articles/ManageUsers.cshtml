@@ -1,5 +1,5 @@
 ﻿@model ubtnews.Areas.Admin.Models.Articles.ManageUsersViewModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 
 @{
     ViewData["Title"] = "ManageUsers";
@@ -41,7 +41,7 @@
                 <select name="userId" class="form-control" asp-items="Model.AvailableUsersSelectList"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-default" />
+                <input type="submit" value="Add" class="btn btn-secondary" />
             </div>
         </form>
     </div>

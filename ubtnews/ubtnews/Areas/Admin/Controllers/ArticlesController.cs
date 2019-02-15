@@ -104,7 +104,7 @@ namespace ubtnews.Areas.Admin.Controllers
 
                 
 
-                _context.Add(article);
+                
 
                 await _context.SaveChangesAsync();
 
@@ -112,6 +112,7 @@ namespace ubtnews.Areas.Admin.Controllers
             }
 
             ViewData["Categories"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["ArticleCategories"] = new SelectList(_context.ArticleCategories, "Id", "ArticleId", "CategoryId");
             return View(article);
         }
 
@@ -143,7 +144,7 @@ namespace ubtnews.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Article article, IFormFile imageFile)
+        public async Task<IActionResult> Edit(int id, Article article, IFormFile imageFile) //qetu mka mbet kodi kur kom dasht me ndreq file upload, editi hala funksionon
         {
             if (id != article.Id)
             {

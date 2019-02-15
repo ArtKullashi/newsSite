@@ -1,5 +1,5 @@
 ﻿@model ubtnews.Models.Article
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -34,7 +34,7 @@
                 <select asp-for="ArticleCategories" class="form-control" asp-items="ViewBag.Categories"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-secondary" />
             </div>
         </form>
     </div>

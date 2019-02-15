@@ -90,10 +90,28 @@ namespace ubtnews.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Article article)
+        public async Task<IActionResult> Create(Article article, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && imageFile != null)
             {
+                var fileName = Path.GetRandomFileName() + Path.GetExtension(imageFile.FileName);
+                var fileDirectory = "wwwroot/images";
+
+                if (!Directory.Exists(fileDirectory))
+                {
+                    Directory.CreateDirectory(fileDirectory);
+                }
+
+                var filePath = fileDirectory + "/" + fileName;
+
+                // Copy file to path...
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                article.Img = fileName;
+
                 _context.Add(article);
 
                 _context.Permissions.Add(new Permission
@@ -112,7 +130,7 @@ namespace ubtnews.Areas.Admin.Controllers
             }
 
             ViewData["Categories"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["ArticleCategories"] = new SelectList(_context.ArticleCategories, "Id", "ArticleId", "CategoryId");
+            
             return View(article);
         }
 

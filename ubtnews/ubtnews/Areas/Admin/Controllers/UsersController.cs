@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using ubtnews.Areas.Admin.Models.Users;
 using ubtnews.Models;
 
-namespace TopNews.Areas.Admin.Controllers
+namespace ubtnews.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Administrator")]
     [Area("Admin")]

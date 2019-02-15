@@ -6,3 +6,7 @@
 body {
   padding-top: 56px;
 }
+
+li#@(ViewContext.RouteData.Values["Controller"])-@(ViewContext.RouteData.Values["Action"]) {
+//add some style
+}

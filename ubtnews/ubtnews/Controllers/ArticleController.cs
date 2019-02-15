@@ -4,11 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ubtnews.Data;
 
 namespace ubtnews.Controllers
 {
     public class ArticleController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public ArticleController(ApplicationDbContext context)
+        {
+            _context = context;
+            
+        }
         // GET: Article
         public ActionResult Index()
         {
@@ -16,9 +25,21 @@ namespace ubtnews.Controllers
         }
 
         // GET: Article/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var article = await _context.Articles
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            return View(article);
         }
 
         // GET: Article/Create

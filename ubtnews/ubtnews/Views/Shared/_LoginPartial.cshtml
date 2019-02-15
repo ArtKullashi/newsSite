@@ -12,7 +12,7 @@
                 <a asp-area="Identity" class="nav-link" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>
             <li>
-                <button type="submit" class="btn btn-dark">Logout</button>
+                <button type="submit" class="btn btn-secondary">Logout</button>
             </li>
         </ul>
     </form>
@@ -20,7 +20,7 @@
 else
 {
     <ul class="navbar-nav ml-auto">
-        <li nav-item><a  asp-area="Identity" class="nav-link"  asp-page="/Account/Register">Register</a></li>
+        <li nav-item><a asp-area="Identity" class="nav-link"  asp-page="/Account/Register">Register</a></li>
         <li nav-item><a asp-area="Identity" class="nav-link" asp-page="/Account/Login">Login</a></li>
     </ul>
 }
